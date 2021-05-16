@@ -113,3 +113,19 @@ document.addEventListener('mousedown', onMouseDown, false);
 document.addEventListener('mouseup',   onMouseUp,   false);
 document.addEventListener('mousemove', onMouseMove, false);
 
+// Custom File upload 
+const realFileInput = document.getElementById('real-file');
+const customBtn = document.getElementById('real-file-button');
+const realFileTxt = document.getElementById('custom-text');
+
+customBtn.addEventListener('click', ()=> {
+  realFileInput.click();
+});
+
+realFileInput.addEventListener('change', () => {
+  if(realFileInput.value) {
+    realFileTxt.innerHTML = realFileInput.value.match(/[\/\\]([\w\d\s\.\-\(\)]+)$/)[1];
+  } else {
+    realFileTxt.innerHTML = "No file choose, Yet";
+  }
+});
