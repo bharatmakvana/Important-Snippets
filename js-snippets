@@ -1,6 +1,41 @@
-Get all Siblings
+// declare constant
+const $body = document.body;
+const navArrow = document.querySelectorAll('.arrow');
+const hamBurgMenu = document.getElementById('hamburg-menu')
+const navigation = document.querySelector('.navigation');
+const currentYear = document.getElementById('current-year');
+const subMenu = document.querySelectorAll('.sub-menu');
+const hasSubLevel = document.querySelectorAll('.has-sub');
+const scrollToTop = document.querySelector('.scroll-top');
+const modal = document.querySelector('#modal');
+const modalTrigger = document.querySelector('#show-modal');
+const modalClose = document.querySelector('#modal-close');
 
-getSiblings(el);
+// show navigation
+hamBurgMenu.addEventListener('click', () => {
+  $body.classList.toggle('menu--open');
+  subMenu.forEach(($subMenu) => { 
+    $subMenu.style.display = 'none';
+  });
+  hasSubLevel.forEach(($hasSubLevel) => { 
+    $hasSubLevel.classList.remove('sub-open');
+  });
+});
+
+// show/hide sub level menu
+navArrow.forEach(($navArrow) => {
+  $navArrow.addEventListener('click', () => {
+    if ($navArrow.parentNode.classList.contains('sub-open')) {
+      $navArrow.parentElement.querySelector('.sub-menu').style.display = 'none';
+    } else {
+      $navArrow.parentElement.querySelector('.sub-menu').style.display = 'block';
+    }
+    $navArrow.parentElement.classList.toggle('sub-open');
+    getSiblings($navArrow.parentNode); // call for get siblings
+  });
+});
+
+// get siblings
 
 let getSiblings = function (e) {
   // for collecting siblings
@@ -23,3 +58,58 @@ let getSiblings = function (e) {
     sibling = sibling.nextSibling;
   }
 };
+
+
+// scroll to top
+scrollToTop.addEventListener('click', () => {
+  $body.scrollTop = document.documentElement.scrollTop = 0;
+});
+
+// Show Modal
+if (typeof(modalTrigger) != 'undefined' && modalTrigger != null) {
+  modalTrigger.addEventListener('click', function() {
+    document.body.classList.add('modal--open');
+  });
+}
+
+// Hide Modal
+modalClose.addEventListener('click', function() {
+   document.body.classList.remove('modal--open');
+});
+
+// Hide Modal on outside click
+window.addEventListener('click', e => {
+  (e.target !== modal && e.target !== modalTrigger) ? document.body.classList.remove('modal--open') : false;
+});
+
+// example for animation freame with mouse events
+var mouseIsDown = false,
+	lastMousePosition = { x: 0, y: 0 };
+
+
+const onMouseDown = () => {
+  mouseIsDown = true;
+  requestAnimationFrame(updateAnimation);
+}
+
+const onMouseUp = () => {
+  mouseIsDown = false;
+}
+
+const onMouseMove = (evt) => {
+  lastMousePosition.x = evt.clientX;
+	lastMousePosition.y = evt.clientY;
+}
+
+const updateAnimation = () => {
+  requestAnimationFrame(updateAnimation);
+
+  if(mouseIsDown) {
+		requestAnimationFrame(updateAnimation);
+	}
+}
+
+document.addEventListener('mousedown', onMouseDown, false);
+document.addEventListener('mouseup',   onMouseUp,   false);
+document.addEventListener('mousemove', onMouseMove, false);
+
